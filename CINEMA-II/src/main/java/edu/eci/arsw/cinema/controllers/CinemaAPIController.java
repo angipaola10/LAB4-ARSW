@@ -5,25 +5,17 @@
  */
 package edu.eci.arsw.cinema.controllers;
 
-import edu.eci.arsw.cinema.model.Cinema;
-import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
-import edu.eci.arsw.cinema.persistence.CinemaPersitence;
-import edu.eci.arsw.cinema.persistence.impl.InMemoryCinemaPersistence;
+import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.services.CinemaException;
 import edu.eci.arsw.cinema.services.CinemaServices;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,8 +41,8 @@ public class CinemaAPIController {
         }
     } 
     
-    @RequestMapping(value="/{name}")
-    public ResponseEntity<?> getCinemaByName(@PathVariable String name){
+    @RequestMapping(value="/{name}", method= RequestMethod.GET)
+    public ResponseEntity<?> getCinemaByName(@PathVariable("name") String name){
     	try {
             return new ResponseEntity<>(cs.getCinemaByName(name),HttpStatus.ACCEPTED);
         }catch (CinemaException e) {
@@ -59,24 +51,36 @@ public class CinemaAPIController {
         }
     }
     
-    @RequestMapping(value="/{nameCinema}/{date}")
-    public ResponseEntity<?> getFunctionsByCinemaAndDate(@PathVariable String nameCinema, @PathVariable String date){
+    @RequestMapping(value="/{name}/{date}", method= RequestMethod.GET)
+    public ResponseEntity<?> getFunctionsByCinemaAndDate(@PathVariable("name") String name, @PathVariable("date") String date){
     	try {
-            return new ResponseEntity<>(cs.getFunctionsbyCinemaAndDate(nameCinema, date),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(cs.getFunctionsbyCinemaAndDate(name, date),HttpStatus.ACCEPTED);
         }catch (CinemaException e) {
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
 	    return new ResponseEntity<>("Error, functios not found",HttpStatus.NOT_FOUND);
         }
     }
     
-    @RequestMapping(value="/{nameCinema}/{date}/{movieName}")
-    public ResponseEntity<?> getFunctionByCinemaDateAndMovie(@PathVariable String nameCinema, @PathVariable String date, @PathVariable String movieName){
+    @RequestMapping(value="/{name}/{date}/{movieName}", method= RequestMethod.GET)
+    public ResponseEntity<?> getFunctionByCinemaDateAndMovie(@PathVariable("name") String name, @PathVariable("date") String date, @PathVariable("movieName") String movieName){
     	try {
-            return new ResponseEntity<>(cs.getFunctionByCinemaDateAndMovie(nameCinema, date, movieName),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(cs.getFunctionByCinemaDateAndMovie(name, date, movieName),HttpStatus.ACCEPTED);
         }catch (CinemaException e) {
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
 	    return new ResponseEntity<>("Error, function not found",HttpStatus.NOT_FOUND);
         }
+    }
+    
+    @RequestMapping(value= "/{name}", method = RequestMethod.POST)	
+    public ResponseEntity<?> postCinemaFuncion(@PathVariable("name") String name, @RequestBody CinemaFunction cf){
+        try {
+            //registrar dato
+            cs.addFunction(name, cf);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>("Error bla bla bla",HttpStatus.FORBIDDEN);            
+        }        
     }
  
 }

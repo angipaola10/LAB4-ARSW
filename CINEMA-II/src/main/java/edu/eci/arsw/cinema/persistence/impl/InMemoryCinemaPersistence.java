@@ -114,5 +114,14 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             throw new CinemaPersistenceException(e.getMessage());
         }
     }
+    
+    @Override
+     public void addFunction(String cinema, CinemaFunction cf) throws CinemaPersistenceException{
+        try {
+            getCinema(cinema).addFunction(cf);
+        } catch (CinemaPersistenceException e) {
+            throw new CinemaPersistenceException(e.getMessage());
+        }
+     }
 
 }

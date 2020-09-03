@@ -88,4 +88,12 @@ public class CinemaServices {
             throw new CinemaException(e.getMessage());
         }
     }
+    
+    public void addFunction(String cinema, CinemaFunction cf ) throws CinemaException{
+        try{
+            cps.addFunction(cinema, cf);
+        }catch(CinemaPersistenceException e){
+            throw new CinemaException(e.getMessage());
+        }
+    }
 }
