@@ -34,11 +34,13 @@ public class CinemaFunction {
     }
     
     public void buyTicket(int row,int col) throws CinemaModelException{
-        if (seats.get(row).get(col).equals(true)){
-            seats.get(row).set(col,Boolean.FALSE);
-        }
-        else{
-            throw new CinemaModelException("Seat booked");
+        synchronized(seats.get(row).get(col)){
+            if (seats.get(row).get(col).equals(true)){
+                seats.get(row).set(col,Boolean.FALSE);
+            }
+            else{
+                throw new CinemaModelException("Seat booked");
+            }
         }
     }
     

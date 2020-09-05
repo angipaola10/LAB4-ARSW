@@ -9,17 +9,15 @@ import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.CinemaModelException;
 import edu.eci.arsw.cinema.model.Movie;
-import edu.eci.arsw.cinema.services.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,12 +27,12 @@ import org.springframework.stereotype.Service;
 @Service("InMemoryCinemaPersistence")
 public class InMemoryCinemaPersistence implements CinemaPersitence{
     
-    private final Map<String,Cinema> cinemas=new HashMap<>();
+    private final Map<String,Cinema> cinemas=new ConcurrentHashMap<String,Cinema>();
 
     public InMemoryCinemaPersistence() {
         //load stub data
         String functionDate = "2018-12-18 15:30";
-        List<CinemaFunction> functions= new ArrayList<>();
+        List<CinemaFunction> functions= new CopyOnWriteArrayList<CinemaFunction>();
         CinemaFunction funct1 = new CinemaFunction(new Movie("SuperHeroes Movie","Action"),functionDate);
         CinemaFunction funct2 = new CinemaFunction(new Movie("The Night","Horror"),functionDate);
         functions.add(funct1); functions.add(funct2);

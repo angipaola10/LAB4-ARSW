@@ -25,24 +25,26 @@ public class AvailabilityFilter implements CinemaFilter{
             s = Integer.parseInt(p);
         }catch(NumberFormatException e){
             throw new CinemaException("El número de sillas no es válido");
-        }
+        } 
         List<CinemaFunction> result = new ArrayList<>();
         int disponibles = 0;
-        for(CinemaFunction cf: functions){
-            for(List<Boolean> f: cf.getSeats()){  
-                for(Boolean cc: f){
-                    if(cc){
-                        disponibles++;
+        synchronized(functions){
+            for(CinemaFunction cf: functions){
+                for(List<Boolean> f: cf.getSeats()){  
+                    for(Boolean cc: f){
+                        if(cc){
+                            disponibles++;
+                        }
                     }
                 }
+                if(disponibles >= s){
+                    result.add(cf);
+                }
             }
-            if(disponibles >= s){
-                result.add(cf);
+            if(result.size() == 0){
+                throw new CinemaException("Ninguna función tiene esa cantidad de sillas");
             }
+            return result; 
         }
-        if(result.size() == 0){
-            throw new CinemaException("Ninguna función tiene esa cantidad de sillas");
-        }
-        return result; 
     }
 }

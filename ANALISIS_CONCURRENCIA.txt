@@ -1,0 +1,36 @@
+
+	* CONDICIONES DE CARRERA
+		
+		- Se puede añadir un cinema mientras mientras un usuario consulta los cinemas, esto puede lanzar excepción por modificación 
+		  concurrente de la lista de cinemas.
+		
+		- Se puede añadir una función mientras mientras un usuario consulta funciones, esto puede lanzar excepción por modificación 
+		  concurrente de la lista de funciones.
+		  
+		- Se puede actualizar una función mientras un usuario consulta funciones, esto puede lanzar excepción por modificación 
+		  concurrente de la lista de funciones.
+		  
+		- Es posible comprar dos tickets en el mismo cinema, en la misma función y en la misma silla si se verifica al mismo tiempo 
+		  que la silla está desocupada. 
+
+		- Se puede comprar un ticket mientras se están filtrando funciones por disponibilidad, lo que podría ocasinar que el resultado
+		  del filtrado sea erróneo. 
+	
+	* REGIONES CRÍTICAS 
+	
+		- Código que consulta y cambia el estado de determinado objeto tipo Seat.
+
+	* SOLUCIÓN 
+	
+		- Establecer la lista de funciones como tipo  CopyOnWriteArrayList y la de cinemas como tipo ConcurrentHashMap para garantizar que no se 
+		  presenten excepciones por modificación concurrente de estas colecciones y los que datos siempre sean consistentes. 
+		  
+		- Bloquear la función que se va a actualizar, mientras se realiza la actualización.  
+		
+		- Bloquear el objeto Seat al cual el método buyTicket de CinemaFunction cambiará su estado, de este modo solo un hilo tendrá acceso a 
+		  ese objeto y solo este podrá cambiar su valor mientras se mantenga bloqueado, lo que garantizará que no se podrá comprar dos tickets en 
+		  el mismo cinema, en la misma función y en la misma silla.
+		  
+		- Bloquear las funciones del un detenermidado cinema y que tengan fecha específica en la porción de código que filtra dichas funciones por 
+		  disponibilidad.
+		  

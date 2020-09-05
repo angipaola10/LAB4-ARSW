@@ -89,7 +89,9 @@ public class Cinema {
         int i = 0;
         for(i = 0; i < functions.size(); i++){
             if(functions.get(i).equals(cf)){
-                functions.remove(functions.get(i)); break;
+                synchronized(functions.get(i)){
+                    functions.remove(functions.get(i)); break;
+                }
             }
         }
         functions.add(i, cf);

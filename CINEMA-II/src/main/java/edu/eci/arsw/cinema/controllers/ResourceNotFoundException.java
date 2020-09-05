@@ -20,7 +20,6 @@ public class ResourceNotFoundException extends Exception{
 
     public ResourceNotFoundException(String message) {
         this.message = message;
-        
     }
     
     public String getMessage() {
