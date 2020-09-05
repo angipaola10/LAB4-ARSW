@@ -11,13 +11,13 @@
      
        Estando en la consola, ingrese a la carpeta **/LAB4-ARSW/CINEMA-II**  y ejecute el comando `mvn clean compile` para compilar el programa
        
-	 ![alt text](https://raw.githubusercontent.com/angipaola10/LAB3-ARSW/master/CINEMA-II/img/compilar.png) 
+	 ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/compile.png) 
 
    * **Ejecutar**
       
        Luego de compilar el programa, en la misma ubicación inserte el comando de ejecución `mvn spring-boot:run`
 	 
-	 ![alt text](https://raw.githubusercontent.com/angipaola10/LAB3-ARSW/master/CINEMA-II/img/ejecutar.png) 
+	 ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/run.png) 
 
 ## Cinema Book System II 🎥🍿
 
