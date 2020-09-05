@@ -112,7 +112,7 @@
 
      * Actualizamos la función, poniendo la primera silla de la primera fila como ocupada:
  
-         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/put.png)
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/putt.png)
          
      * Verificamos que la función fue actualizada:
  
