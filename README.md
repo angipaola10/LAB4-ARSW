@@ -4,6 +4,21 @@
   
 ## Compile and Run Instructions
 
+   Es necesario tener instalado [maven](https://maven.apache.org/ "maven") en el equipo que se desee correr el programa. Abra la consola y ubiquese donde desea tener este
+   proyecto, inserte el comando `git clone https://github.com/angipaola10/LAB4-ARSW` para clonar el proyecto en su computador, se creará la carpera **/LAB4-ARSW**
+
+   * **Compilar**
+     
+       Estando en la consola, ingrese a la carpeta **/LAB4-ARSW/CINEMA-II**  y ejecute el comando `mvn clean compile` para compilar el programa
+       
+	 ![alt text](https://raw.githubusercontent.com/angipaola10/LAB3-ARSW/master/CINEMA-II/img/compilar.png) 
+
+   * **Ejecutar**
+      
+       Luego de compilar el programa, en la misma ubicación inserte el comando de ejecución `mvn spring-boot:run`
+	 
+	 ![alt text](https://raw.githubusercontent.com/angipaola10/LAB3-ARSW/master/CINEMA-II/img/ejecutar.png) 
+
 ## Cinema Book System II 🎥🍿
 
 ### Descripción
