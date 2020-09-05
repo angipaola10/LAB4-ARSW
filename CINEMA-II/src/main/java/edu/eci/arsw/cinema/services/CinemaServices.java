@@ -38,8 +38,12 @@ public class CinemaServices {
         }
     }
     
-    public Set<Cinema> getAllCinemas(){
-        return cps.getAllCinemas();
+    public Set<Cinema> getAllCinemas() throws CinemaException{
+        try{
+            return cps.getAllCinemas();
+        }catch(CinemaPersistenceException e){
+            throw new CinemaException(e.getMessage());
+        }
     }
     
     /**
@@ -74,11 +78,7 @@ public class CinemaServices {
     }
     
     public List<CinemaFunction> getFilteredFunctions(String cinema, String date, String p) throws CinemaException{
-        try{
-            return filter.filter(getFunctionsbyCinemaAndDate(cinema,date), p);
-        }catch(CinemaException e){
-            throw new CinemaException(e.getMessage());
-        }
+        return filter.filter(getFunctionsbyCinemaAndDate(cinema,date), p);
     }
     
     public CinemaFunction getFunctionByCinemaDateAndMovie(String cinema, String date, String movie) throws CinemaException{
@@ -89,9 +89,17 @@ public class CinemaServices {
         }
     }
     
-    public void addFunction(String cinema, CinemaFunction cf ) throws CinemaException{
+    public void addFunction(String cinema, CinemaFunction cf) throws CinemaException{
         try{
             cps.addFunction(cinema, cf);
+        }catch(CinemaPersistenceException e){
+            throw new CinemaException(e.getMessage());
+        }
+    }
+    
+    public void setFunction(String cinema, CinemaFunction cf) throws CinemaException{
+        try{
+            cps.setFunction(cinema, cf);
         }catch(CinemaPersistenceException e){
             throw new CinemaException(e.getMessage());
         }

@@ -36,7 +36,12 @@ public class Cinema {
         return this.functions;
     }
     
-    public void addFunction(CinemaFunction cf){
+    public void addFunction(CinemaFunction cf) throws CinemaModelException{
+        for(CinemaFunction c: functions){
+            if (c.equals(cf)){
+                throw new CinemaModelException("This function already exists");
+            }
+        }
         functions.add(cf);
     }
 
@@ -45,12 +50,13 @@ public class Cinema {
     }
     
     public CinemaFunction getFunctionByMovieAndDate(String movie, String date) throws CinemaModelException{
-        for(CinemaFunction cf: functions){
-            if(cf.getMovie().getName().equals(movie) && cf.getDate().equals(date)){
-                return cf;
+        List<CinemaFunction> cf = getFunctionsByDate(date);
+        for (CinemaFunction f: cf){
+            if (f.getMovie().getName().equals(movie)){
+                return f;
             }
         }
-        throw new CinemaModelException("No exists a function with that name or date");
+        throw new CinemaModelException("No exists a function with that movie name");
     }
     
     public List<CinemaFunction> getFunctionsByDate(String date) throws CinemaModelException {
@@ -78,4 +84,15 @@ public class Cinema {
         }
         return cinema;
     }
+    
+    public void setFunction(String cinema, CinemaFunction cf){
+        int i = 0;
+        for(i = 0; i < functions.size(); i++){
+            if(functions.get(i).equals(cf)){
+                functions.remove(functions.get(i)); break;
+            }
+        }
+        functions.add(i, cf);
+    }
+    
 }

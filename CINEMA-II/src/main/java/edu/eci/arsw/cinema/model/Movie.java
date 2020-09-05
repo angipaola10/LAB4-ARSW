@@ -35,4 +35,11 @@ public class Movie {
     public void setGenre(String genre) {
         this.genre = genre;
     }
+    
+    public boolean equals(Movie m){
+        if (m.getName().equals(name) && m.getGenre().equals(genre)){
+            return true;
+        }
+        return false;
+    }
 }

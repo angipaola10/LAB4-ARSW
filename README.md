@@ -56,23 +56,64 @@
  de @PathVariable. De nuevo, verifique que al hacer una petición GET -por ejemplo- a recurso http://localhost:8080/cinemas/cinemaY , se obtenga en formato jSON el conjunto de 
  funciones asociadas al cine 'cinemaY' (ajuste esto a los nombres de cine usados en el punto 2).
  
-     ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-2.png)
+     * Se obtiene un json con la información del cine:
+     
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-2.png)
+         
+     * Si se hace ingresa un nombre de cine no registrado se obtiene:
+     
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/notfoundcinema.png)
      
  6. Modifique el controlador para que ahora, acepte peticiones GET al recurso /cinemas/{name}/{date}, el cual retorne usando una representación jSON una lista de funciones 
  asociadas al cine cuyo nombre es {name} y cuya fecha sea {date}, para mayor facilidad se seguirá manejando el formato "yyyy-MM-dd". De nuevo, si no existen dichas funciones, 
  se debe responder con el código de error HTTP 404.
 
-     ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-3.png)
+     * Se obtiene un json con la información de las funciones:
+     
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-3.png)
+     
+     * Si no hay funciones con esa fecha se obtiene:
+     
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/notfoundfunctions.png)
     
  7. Modifique el controlador para que ahora, acepte peticiones GET al recurso /cinemas/{name}/{date}/{moviename}, el cual retorne usando una representación jSON sólo UNA 
  función, en este caso es necesario detallar además de la fecha, la hora exacta de la función de la forma "yyyy-MM-dd HH:mm". Si no existe dicha función, se debe responder 
  con el código de error HTTP 404.
  
-     ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-4.png)
+     * Se obtiene un json con la información de la función:
+ 
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-4.png)
+         
+     * Si no existe una función con una pelicula llamada así se obtiene:
+     
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/notfoundfunction.png)
      
 ### Parte II
 
  1. Agregue el manejo de peticiones POST (creación de nuevas funciones), de manera que un cliente http pueda registrar una nueva función a un determinado cine haciendo una 
  petición POST al recurso ‘/cinemas/{name}’, y enviando como contenido de la petición todo el detalle de dicho recurso a través de un documento jSON. Para esto, tenga en 
  cuenta el siguiente ejemplo, que considera -por consistencia con el protocolo HTTP- el manejo de códigos de estados HTTP (en caso de éxito o error).
-     
+ 
+ 2. Para probar que el recurso ‘cinemas’ acepta e interpreta correctamente las peticiones POST, use el comando curl de Unix. Este comando tiene como parámetro el tipo de contenido manejado (en este caso jSON), y el ‘cuerpo del mensaje’ que irá con la petición, lo cual en este caso debe ser un documento jSON equivalente a la clase Cliente (donde en lugar de {ObjetoJSON}, se usará un objeto jSON correspondiente a una nueva función: Con lo anterior, registre un nueva función (para 'diseñar' un objeto jSON, puede usar esta herramienta): Nota: puede basarse en el formato jSON mostrado en el navegador al consultar una función con el método GET.
+ 
+     * Se crea la función:
+ 
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/post.png)
+         
+ 3. Teniendo en cuenta el nombre del cine, la fecha y hora de la función y el nombre de la película, verifique que el mismo se pueda obtener mediante una petición GET al 
+ recurso '/cinemas/{name}/{date}/{moviename}' correspondiente. 
+ 
+     * Comprobamos que la función fue creada:
+ 
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-6.png)
+ 
+ 4. Agregue soporte al verbo PUT para los recursos de la forma '/cinemas/{name}', de manera que sea posible actualizar una función determinada, el servidor se encarga de 
+ encontrar la función correspondiente y actualizarla o crearla.
+
+     * Actualizamos la función, poniendo la primera silla de la primera fila como ocupada:
+ 
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/put.png)
+         
+     * Verificamos que la función fue actualizada:
+ 
+         ![alt text](https://raw.githubusercontent.com/angipaola10/LAB4-ARSW/master/CINEMA-II/img/json-7.png)

@@ -75,7 +75,7 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             Cinema c;
             c = getCinema(cinema);
             return c.getFunctionsByDate(date);
-        } catch (CinemaModelException | CinemaPersistenceException e) {
+        } catch (CinemaModelException e) {
             throw new CinemaPersistenceException(e.getMessage());
         }
     }
@@ -95,12 +95,15 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
         if (cinemas.containsKey(name)){
             return cinemas.get(name);
         }
-        throw new CinemaPersistenceException("No exists a cinema with that name");
+        throw new CinemaPersistenceException("No exists a cinema with name: "+name);
     }
     
     @Override
-    public Set<Cinema> getAllCinemas() {
+    public Set<Cinema> getAllCinemas() throws CinemaPersistenceException {
         Set<Cinema> allCinemas = new HashSet(cinemas.values());
+        if (allCinemas.size() == 0){
+            throw new CinemaPersistenceException("Cinemas not found");
+        }
         return allCinemas;
     }
     
@@ -110,7 +113,7 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
             Cinema c;
             c = getCinema(cinema);
             return c.getFunctionByMovieAndDate(movie, date);
-        } catch (CinemaModelException | CinemaPersistenceException e) {
+        } catch (CinemaModelException e) {
             throw new CinemaPersistenceException(e.getMessage());
         }
     }
@@ -119,9 +122,14 @@ public class InMemoryCinemaPersistence implements CinemaPersitence{
      public void addFunction(String cinema, CinemaFunction cf) throws CinemaPersistenceException{
         try {
             getCinema(cinema).addFunction(cf);
-        } catch (CinemaPersistenceException e) {
+        } catch (CinemaModelException e) {
             throw new CinemaPersistenceException(e.getMessage());
         }
+     }
+     
+     @Override
+     public void setFunction(String cinema, CinemaFunction cf) throws CinemaPersistenceException{
+        getCinema(cinema).setFunction(cinema, cf);
      }
 
 }

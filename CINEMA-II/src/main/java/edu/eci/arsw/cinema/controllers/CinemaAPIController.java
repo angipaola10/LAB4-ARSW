@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,55 +30,91 @@ public class CinemaAPIController {
     CinemaServices cs;
     
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> getAllCinemas(){
+    public ResponseEntity<?> getAllCinemas() throws ResourceNotFoundException {
         try{
-            //obtener datos que se enviarán a través del API
             return new ResponseEntity<>(cs.getAllCinemas(),HttpStatus.ACCEPTED);
-        }catch(Exception e){
+        }catch(CinemaException e){
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
-	    return new ResponseEntity<>("Error, cinemas not found",HttpStatus.NOT_FOUND);
+	    if (e.getMessage().equals("Cinemas not found")){
+               throw new ResourceNotFoundException(e.getMessage());
+            } return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);  
         }
     } 
     
     @RequestMapping(value="/{name}", method= RequestMethod.GET)
-    public ResponseEntity<?> getCinemaByName(@PathVariable("name") String name){
+    public ResponseEntity<?> getCinemaByName(@PathVariable("name") String name) throws ResourceNotFoundException{
     	try {
             return new ResponseEntity<>(cs.getCinemaByName(name),HttpStatus.ACCEPTED);
         }catch (CinemaException e) {
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
-	    return new ResponseEntity<>("Error, cinema not found",HttpStatus.NOT_FOUND);
+	    if (e.getMessage().equals("Cinemas not found")){
+               throw new ResourceNotFoundException(e.getMessage());
+            }else if (e.getMessage().equals("No exists a cinema with name: "+name)){
+                throw new ResourceNotFoundException(e.getMessage());
+            } return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);  
         }
     }
     
     @RequestMapping(value="/{name}/{date}", method= RequestMethod.GET)
-    public ResponseEntity<?> getFunctionsByCinemaAndDate(@PathVariable("name") String name, @PathVariable("date") String date){
+    public ResponseEntity<?> getFunctionsByCinemaAndDate(@PathVariable("name") String name, @PathVariable("date") String date) throws ResourceNotFoundException{
     	try {
             return new ResponseEntity<>(cs.getFunctionsbyCinemaAndDate(name, date),HttpStatus.ACCEPTED);
         }catch (CinemaException e) {
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
-	    return new ResponseEntity<>("Error, functios not found",HttpStatus.NOT_FOUND);
+	    if (e.getMessage().equals("Cinemas not found")){
+               throw new ResourceNotFoundException(e.getMessage());
+            }else if (e.getMessage().equals("No exists a cinema with name: "+name)){
+                throw new ResourceNotFoundException(e.getMessage());
+            }else if (e.getMessage().equals("No exists a function with that date")){
+                throw new ResourceNotFoundException(e.getMessage());
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     
     @RequestMapping(value="/{name}/{date}/{movieName}", method= RequestMethod.GET)
-    public ResponseEntity<?> getFunctionByCinemaDateAndMovie(@PathVariable("name") String name, @PathVariable("date") String date, @PathVariable("movieName") String movieName){
+    public ResponseEntity<?> getFunctionByCinemaDateAndMovie(@PathVariable("name") String name, @PathVariable("date") String date, @PathVariable("movieName") String movieName) throws ResourceNotFoundException{
     	try {
             return new ResponseEntity<>(cs.getFunctionByCinemaDateAndMovie(name, date, movieName),HttpStatus.ACCEPTED);
         }catch (CinemaException e) {
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
-	    return new ResponseEntity<>("Error, function not found",HttpStatus.NOT_FOUND);
+	    if (e.getMessage().equals("Cinemas not found")){
+               throw new ResourceNotFoundException(e.getMessage());
+            }else if (e.getMessage().equals("No exists a cinema with name: "+name)){
+                throw new ResourceNotFoundException(e.getMessage());
+            }else if (e.getMessage().equals("No exists a function with that date")){
+                throw new ResourceNotFoundException(e.getMessage());
+            }else if (e.getMessage().equals("No exists a function with that movie name")){
+                throw new ResourceNotFoundException(e.getMessage());
+            }return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     
     @RequestMapping(value= "/{name}", method = RequestMethod.POST)	
-    public ResponseEntity<?> postCinemaFuncion(@PathVariable("name") String name, @RequestBody CinemaFunction cf){
+    public ResponseEntity<?> postCinemaFunction(@PathVariable("name") String name, @RequestBody CinemaFunction cf) throws ResourceNotFoundException{
         try {
-            //registrar dato
             cs.addFunction(name, cf);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
+        } catch (CinemaException e) {
             Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
-            return new ResponseEntity<>("Error bla bla bla",HttpStatus.FORBIDDEN);            
+            if (e.getMessage().equals("No exists a cinema with name: "+name)) 
+                throw new ResourceNotFoundException(e.getMessage());
+            else if (e.getMessage().equals("This function already exists")){
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            } return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);  
+        }
+    }
+    
+    @RequestMapping(value= "/{name}", method = RequestMethod.PUT)	
+    public ResponseEntity<?> putCinemaFunction(@PathVariable("name") String name, @RequestBody CinemaFunction cf) throws ResourceNotFoundException{
+        try {
+            cs.setFunction(name, cf);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (CinemaException e) {
+            Logger.getLogger(RestController.class.getName()).log(Level.SEVERE, null, e);
+            if (e.getMessage().equals("No exists a cinema with name: "+name)) {
+                throw new ResourceNotFoundException(e.getMessage());
+            } return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);         
         }        
     }
  

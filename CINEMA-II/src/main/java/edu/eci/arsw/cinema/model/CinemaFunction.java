@@ -66,4 +66,10 @@ public class CinemaFunction {
         return "Película: "+movie.getName()+"      Fecha: "+date;
     }    
     
+    public boolean equals(CinemaFunction cf){
+        if (date.equals(cf.getDate()) && movie.equals(cf.getMovie())){
+            return true;
+        }
+        return false;
+    }
 }
